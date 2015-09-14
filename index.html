@@ -54,17 +54,27 @@
 		var venue = data.response.venues[item];
 		var name = venue.name;
 		var address = venue.location.address;
-		
-		var a = undefined;
-		if (venue.stats.url !== undefined) {
-		  a = document.createElement('a');
-		  var linkText = document.createTextNode(name);
-		  a.appendChild(linkText);
-          a.href = venue.stats.url;
-		}		
-		
 		var elem = document.createElement('li');
-		elem.innerHTML = (a !== undefined ? a : name) + ', ' + address;
+		var a = undefined;
+		var info = "";
+		
+		if (venue.url !== undefined) {
+		  a = document.createElement('a');
+          a.href = venue.url;
+		  a.setAttribute('href', venue.url);
+		  a.innerText = name;
+		  a.setAttribute("target", "_blank");
+		  elem.appendChild(a);
+		}
+		
+		if (a === undefined) {
+		  info += name;
+		}
+		if (address !== undefined) {
+		  info += (', ' + address);
+		}
+		
+		elem.innerHTML = elem.innerHTML + info;
 		
 		resultsList.appendChild(elem);
 		
@@ -83,10 +93,7 @@
     //var map = L.mapbox.map('map', 'mapbox.streets').setView([lat, lng], 9);
 	var map = new L.Map('map').setView(new L.LatLng(lat, lng), 15);
 	
-	var mapboxUrl = 'http://a.tiles.mapbox.com/v3/foursquare.map-b7qq4a62.jsonp';
-//    wax.tilejson(mapboxUrl, function(tilejson) {
-//      map.addLayer(new wax.leaf.connector(tilejson));
-//    });
+	// Need to finish implementing the map for the display of the returned venues.
   }
   
   </script>
