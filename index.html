@@ -27,7 +27,7 @@
   var lat;
   var lng;
   
-  // Get the JSON response with the venues data
+  // Get the JSON response with the venues data.
   $(document).ready(function(){
     $("button").click(function(){
 	
@@ -44,13 +44,14 @@
     });
   });
   
+  // Function for displaying the resulting list of venues.
   function displayResults(data) {
     if (data !== undefined) {
       var resultsList = document.getElementById('results');
 	  resultsList.innerHTML = "";
 	  
       for (var item in data.response.venues) {
-        // get the info from each venue and display it - just list it for now
+        // get the info from each venue and display it - just list it for now.
 		var venue = data.response.venues[item];
 		var name = venue.name;
 		var address = venue.location.address;
@@ -78,16 +79,17 @@
 		
 		resultsList.appendChild(elem);
 		
-		// Just grab the latitude and longitude of the first venue and use this for the map
+		// Just grab the latitude and longitude of the first venue and use this for the map.
 		if (lat === undefined || lng === undefined) {
 		  lat = venue.location.lat;
-		  lng = venue.location.lng
+		  lng = venue.location.lng;
 		}
       }
 	  showMap();
 	}
   }
   
+  // Function for creating the map of results.
   function showMap() {
     L.mapbox.accessToken = 'pk.eyJ1IjoiamFrZWJjIiwiYSI6ImNpZWtlY25ieDAwMHF0N2tnMWM3bzVlNjUifQ.Wx2y4OH1Wqm4uXcHfkGqew';
     //var map = L.mapbox.map('map', 'mapbox.streets').setView([lat, lng], 9);
@@ -107,3 +109,4 @@
   <div id='map'></div>
   <ul id="results"></ul>
 </body>
+</html>
