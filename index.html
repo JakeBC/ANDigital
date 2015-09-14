@@ -28,16 +28,29 @@
 			
       $.get(url, function(data){
 	    returnedData = data;
+		displayResults(data);
       });
     });
   });
+  
+  function displayResults(JSONdata) {
+    if (JSONdata !== undefined) {
+      var resultsList = document.getElementById('results');
+	  
+      for (var item in JSONdata.response.venues) {
+        // get the info from each venue and display it
+      }
+	}
+  }
   
   </script>
 </head>
 <body>
   <div>
-    <pre>Where would you like to go?   </pre>
+    <pre>Where would you like to go?</pre>
     <input id="place"></input>
 	<button>GO!</button>
   </div>
+  <ul id="results">
+  </ul>
 </body>
