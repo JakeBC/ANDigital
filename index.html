@@ -6,6 +6,15 @@
 <head>
   <title>Places Finder</title>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" id="jquery"></script>
+  <script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
+  <meta charset=utf-8 />
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
+  <style>
+    body { margin:0; padding:0; }
+    #map { position:absolute; top:20; width:100%; }
+  </style>
+  
   <script type="text/javascript">
   
   // Info needed for the foursquare request - not sure the secret should be hard coded like this???
@@ -15,6 +24,8 @@
   };
   
   var returnedData;
+  var lat;
+  var lng;
   
   // Get the JSON response with the venues data
   $(document).ready(function(){
@@ -44,22 +55,35 @@
 		var name = venue.name;
 		var address = venue.location.address;
 		
+		// Just grab the latitude and longitude of the first venue and use this for the map
+		if (lat === undefined || lng === undefined) {
+		  lat = venue.location.lat;
+		  lng = venue.location.lng
+		}
+		
 		var elem = document.createElement('li');
 		elem.innerHTML = name + ', ' + address;
 		
 		resultsList.appendChild(elem);
+		
+		showMap();
       }
 	}
+  }
+  
+  function showMap() {
+    L.mapbox.accessToken = 'jakebc.ciekd28f4000esukg0bdsh4r9';
+    var map = L.mapbox.map('map', 'mapbox.streets').setView([lat, lng], 9);
   }
   
   </script>
 </head>
 <body>
-  <div>
+  <div id="searchBar">
     <pre>Where would you like to go?</pre>
     <input id="place"></input>
 	<button>GO!</button>
   </div>
-  <ul id="results">
-  </ul>
+  <div id='map'></div>
+  <ul id="results"></ul>
 </body>
