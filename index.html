@@ -14,15 +14,23 @@
 	clientSecret: 'WJY00GOCGS45REOKJHCEJT5WHLQ1KLL0GGLPSYASY32Y2GA5',
   };
   
-  // Function for getting the JSON with nearby places.
-  function getNearbyPlaces() {
-    var url = 'https://api.foursquare.com/v2/venues/search' +
+  var returnedData;
+  
+  // Get the JSON response with venues data
+  $(document).ready(function(){
+    $("button").click(function(){
+	
+	  var url = 'https://api.foursquare.com/v2/venues/search' +
 			'?client_id=' + config.clientID +
 			'&client_secret=' + config.clientSecret +
 			'&v=20130815' +
 			'&near=' + document.getElementById('place').value;
-	// need to return the JSON from the URL...
-  }
+			
+      $.get(url, function(data){
+	    returnedData = data;
+      });
+    });
+  });
   
   </script>
 </head>
@@ -30,6 +38,6 @@
   <div>
     <pre>Where would you like to go?   </pre>
     <input id="place"></input>
-	<button onclick="getNearbyPlaces()">GO!</button>
+	<button>GO!</button>
   </div>
 </body>
