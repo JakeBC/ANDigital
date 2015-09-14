@@ -55,25 +55,38 @@
 		var name = venue.name;
 		var address = venue.location.address;
 		
+		var a = undefined;
+		if (venue.stats.url !== undefined) {
+		  a = document.createElement('a');
+		  var linkText = document.createTextNode(name);
+		  a.appendChild(linkText);
+          a.href = venue.stats.url;
+		}		
+		
+		var elem = document.createElement('li');
+		elem.innerHTML = (a !== undefined ? a : name) + ', ' + address;
+		
+		resultsList.appendChild(elem);
+		
 		// Just grab the latitude and longitude of the first venue and use this for the map
 		if (lat === undefined || lng === undefined) {
 		  lat = venue.location.lat;
 		  lng = venue.location.lng
 		}
-		
-		var elem = document.createElement('li');
-		elem.innerHTML = name + ', ' + address;
-		
-		resultsList.appendChild(elem);
-		
-		showMap();
       }
+	  showMap();
 	}
   }
   
   function showMap() {
-    L.mapbox.accessToken = 'jakebc.ciekd28f4000esukg0bdsh4r9';
-    var map = L.mapbox.map('map', 'mapbox.streets').setView([lat, lng], 9);
+    L.mapbox.accessToken = 'pk.eyJ1IjoiamFrZWJjIiwiYSI6ImNpZWtlY25ieDAwMHF0N2tnMWM3bzVlNjUifQ.Wx2y4OH1Wqm4uXcHfkGqew';
+    //var map = L.mapbox.map('map', 'mapbox.streets').setView([lat, lng], 9);
+	var map = new L.Map('map').setView(new L.LatLng(lat, lng), 15);
+	
+	var mapboxUrl = 'http://a.tiles.mapbox.com/v3/foursquare.map-b7qq4a62.jsonp';
+//    wax.tilejson(mapboxUrl, function(tilejson) {
+//      map.addLayer(new wax.leaf.connector(tilejson));
+//    });
   }
   
   </script>
