@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+
+<html>
+<head>
+  <title>Places Finder</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" id="jquery"></script>
+  <script type="text/javascript">
+  
+  // Info needed for the foursquare request - not sure the secret should be hard coded like this???
+  var config = {
+    clientID: 'KQAJGIJZEEHA5YT1U212K3Q3PYZVBMUD2Z5BJQLEQMTGSG4B',
+	clientSecret: 'WJY00GOCGS45REOKJHCEJT5WHLQ1KLL0GGLPSYASY32Y2GA5',
+  };
+  
+  // Function for getting the JSON with nearby places.
+  function getNearbyPlaces() {
+    var url = 'https://api.foursquare.com/v2/venues/search' +
+			'?client_id=' + config.clientID +
+			'&client_secret=' + config.clientSecret +
+			'&v=20130815' +
+			'&near=' + document.getElementById('place').value;
+	// need to return the JSON from the URL...
+  }
+  
+  </script>
+</head>
+<body>
+  <div>
+    <pre>Where would you like to go?   </pre>
+    <input id="place"></input>
+	<button onclick="getNearbyPlaces()">GO!</button>
+  </div>
+</body>
