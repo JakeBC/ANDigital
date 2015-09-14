@@ -16,7 +16,7 @@
   
   var returnedData;
   
-  // Get the JSON response with venues data
+  // Get the JSON response with the venues data
   $(document).ready(function(){
     $("button").click(function(){
 	
@@ -33,12 +33,21 @@
     });
   });
   
-  function displayResults(JSONdata) {
-    if (JSONdata !== undefined) {
+  function displayResults(data) {
+    if (data !== undefined) {
       var resultsList = document.getElementById('results');
+	  resultsList.innerHTML = "";
 	  
-      for (var item in JSONdata.response.venues) {
-        // get the info from each venue and display it
+      for (var item in data.response.venues) {
+        // get the info from each venue and display it - just list it for now
+		var venue = data.response.venues[item];
+		var name = venue.name;
+		var address = venue.location.address;
+		
+		var elem = document.createElement('li');
+		elem.innerHTML = name + ', ' + address;
+		
+		resultsList.appendChild(elem);
       }
 	}
   }
