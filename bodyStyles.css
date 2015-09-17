@@ -1,0 +1,35 @@
+html, body{
+	height: 100%;
+	margin: 0;
+	
+}
+
+body{
+	font: 15px 'trebuchet MS', 'lucida sans';
+}
+
+#panel{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 33%;
+	height: 100%;
+}
+
+#searchBar{
+	position: relative;
+    display: block;
+	padding: .4em .4em 0 2.5em;
+	height: 15%;
+	background: #CCFF33;
+	border-radius: 0 3em 3em 3em;
+}
+
+#map{
+	position: absolute;
+	top: 0;
+	left: 34%;
+	background: #87ceeb;
+	width: 66%;
+	height: 100%;
+}
