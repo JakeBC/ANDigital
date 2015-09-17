@@ -1,112 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-
 <html>
 <head>
   <title>Places Finder</title>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" id="jquery"></script>
-  <script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
   <meta charset=utf-8 />
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
   <link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
-  <style>
-    body { margin:0; padding:0; }
-    #map { position:absolute; top:20; width:100%; }
-  </style>
-  
-  <script type="text/javascript">
-  
-  // Info needed for the foursquare request - not sure the secret should be hard coded like this???
-  var config = {
-    clientID: 'KQAJGIJZEEHA5YT1U212K3Q3PYZVBMUD2Z5BJQLEQMTGSG4B',
-	clientSecret: 'WJY00GOCGS45REOKJHCEJT5WHLQ1KLL0GGLPSYASY32Y2GA5',
-  };
-  
-  var returnedData;
-  var lat;
-  var lng;
-  
-  // Get the JSON response with the venues data.
-  $(document).ready(function(){
-    $("button").click(function(){
-	
-	  var url = 'https://api.foursquare.com/v2/venues/search' +
-			'?client_id=' + config.clientID +
-			'&client_secret=' + config.clientSecret +
-			'&v=20130815' +
-			'&near=' + document.getElementById('place').value;
-			
-      $.get(url, function(data){
-	    returnedData = data;
-		displayResults(data);
-      });
-    });
-  });
-  
-  // Function for displaying the resulting list of venues.
-  function displayResults(data) {
-    if (data !== undefined) {
-      var resultsList = document.getElementById('results');
-	  resultsList.innerHTML = "";
-	  
-      for (var item in data.response.venues) {
-        // get the info from each venue and display it - just list it for now.
-		var venue = data.response.venues[item];
-		var name = venue.name;
-		var address = venue.location.address;
-		var elem = document.createElement('li');
-		var a = undefined;
-		var info = "";
-		
-		if (venue.url !== undefined) {
-		  a = document.createElement('a');
-          a.href = venue.url;
-		  a.setAttribute('href', venue.url);
-		  a.innerText = name;
-		  a.setAttribute("target", "_blank");
-		  elem.appendChild(a);
-		}
-		
-		if (a === undefined) {
-		  info += name;
-		}
-		if (address !== undefined) {
-		  info += (', ' + address);
-		}
-		
-		elem.innerHTML = elem.innerHTML + info;
-		
-		resultsList.appendChild(elem);
-		
-		// Just grab the latitude and longitude of the first venue and use this for the map.
-		if (lat === undefined || lng === undefined) {
-		  lat = venue.location.lat;
-		  lng = venue.location.lng;
-		}
-      }
-	  showMap();
-	}
-  }
-  
-  // Function for creating the map of results.
-  function showMap() {
-    L.mapbox.accessToken = 'pk.eyJ1IjoiamFrZWJjIiwiYSI6ImNpZWtlY25ieDAwMHF0N2tnMWM3bzVlNjUifQ.Wx2y4OH1Wqm4uXcHfkGqew';
-    //var map = L.mapbox.map('map', 'mapbox.streets').setView([lat, lng], 9);
-	var map = new L.Map('map').setView(new L.LatLng(lat, lng), 15);
-	
-	// Need to finish implementing the map for the display of the returned venues.
-  }
-  
-  </script>
+  <link href='bodyStyles.css' rel='stylesheet' />
+  <link href='listStyles.css' rel='stylesheet' />
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" id="jquery"></script>
+  <script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
+  <script src="myScripts.js" type="text/javascript"></script>
 </head>
-<body>
-  <div id="searchBar">
-    <pre>Where would you like to go?</pre>
-    <input id="place"></input>
-	<button>GO!</button>
+<body onload="setMap()">
+  <div id="panel">
+    <div id="searchBar">
+      <p>Where would you like to go?</p>
+      <input id="place"></input>
+  	  <button>GO!</button>
+    </div>
+    <ul id="results"></ul>
+    </div>
+  <div id="map">
+    
   </div>
-  <div id='map'></div>
-  <ul id="results"></ul>
 </body>
 </html>
