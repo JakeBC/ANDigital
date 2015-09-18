@@ -25,54 +25,53 @@ $(document).ready(function(){
 function displayResults(data) {
     if (data !== undefined) {
 		var resultsList = document.getElementById('results');
-		var lat;
-		var lng;
+		var lat = data.response.geocode.feature.geometry.center.lat;
+		var lng = data.response.geocode.feature.geometry.center.lng;
 		resultsList.innerHTML = "";
 		clearMarkers();
 	  
 		for (var item in data.response.venues) {
 			// get the info from each venue and display it - just list it for now.
 			var venue = data.response.venues[item];
-			var name = venue.name;
-			var address = venue.location.address;
 			var elem = document.createElement('li');
-			var a = undefined;
-			var info = "";
+			var a = getVenueLink(venue);
+			a.setAttribute('onmouseover', 'selectedVenue(this)');
 		
-			a = document.createElement('a');
-			a.innerText = name;
-			if (address !== undefined) {
-				a.innerText += (', ' + address);
-			}
-			if (venue.url !== undefined) {
-				a.href = venue.url;
-				a.setAttribute('href', venue.url);
-				a.setAttribute("target", "_blank");
-			}
 			elem.appendChild(a);
-		
 			resultsList.appendChild(elem);
-		
-			// Just grab the latitude and longitude of the first venue and use this for the map.
-			if (lat === undefined || lng === undefined) {
-				lat = venue.location.lat;
-				lng = venue.location.lng;
-				centreMap(lat, lng);
-			}
-			
 			addMarker(venue);
 		}
+		centreMap(lat, lng);
 	}
 }
+
+// Create a link element for the given venue.
+function getVenueLink(venue) {
+	a = document.createElement('a');
+	a.innerText = venue.name;
+	if (venue.location.address !== undefined) {
+		a.innerText += (', ' + venue.location.address);
+	}
+	if (venue.url !== undefined) {
+		a.href = venue.url;
+		a.setAttribute('href', venue.url);
+		a.setAttribute('target', '_blank');
+	}
+	a.setAttribute('class', venue.id);
+	return a;
+}
   
-// Function for centring and zooming into the localised map. Have just hard coded the zoom level for now at 13.
+// Function for centring and zooming into the localised map. Have just hard coded the zoom level for now at 16.
 function centreMap(lat, lng) {
-    myMap.setView([lat, lng], 13);
+    myMap.setView([lat, lng], 16);
 }
 
 // Function for adding a venue to the map.
 function addMarker(venue) {
-	L.marker([venue.location.lat, venue.location.lng]).addTo(myMap);
+	var marker = L.marker([venue.location.lat, venue.location.lng],
+	{title: venue.name, opacity: 0.5}
+	);
+	marker.addTo(myMap).bindPopup(getVenueLink(venue));
 }
 
 function clearMarkers() {
@@ -83,4 +82,8 @@ function clearMarkers() {
 function setMap() {
 	L.mapbox.accessToken = 'pk.eyJ1IjoiamFrZWJjIiwiYSI6ImNpZWtlY25ieDAwMHF0N2tnMWM3bzVlNjUifQ.Wx2y4OH1Wqm4uXcHfkGqew';
 	myMap = L.mapbox.map('map', 'jakebc.ciekd28f4000esukg0bdsh4r9');
+}
+
+function selectedVenue(venue) {
+	// TODO: Provide some highlighting to the corresponding marker.
 }
